@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُربّي | رفيقك في التربية الإسلامية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0B0F19',
+                        darker: '#06080D',
+                        primary: '#10B981',
+                        secondary: '#F59E0B',
+                        surface: 'rgba(255, 255, 255, 0.03)',
+                        surfaceBorder: 'rgba(255, 255, 255, 0.08)',
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow-primary': '0 0 40px -10px rgba(16, 185, 129, 0.5)',
+                        'glow-secondary': '0 0 40px -10px rgba(245, 158, 11, 0.4)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #06080D;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #F59E0B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-bg {
+            background-size: 50px 50px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            z-index: 0;
+            opacity: 0.3;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+        }
+
+        /* Mobile Performance Optimizations */
+        @media (max-width: 768px) {
+            .blob {
+                display: none;
+            }
+
+            /* Hide heavy blobs on mobile */
+            .glass-panel {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+        }
+
+        .gs-hero-item {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .gs-hero-img-item {
+            opacity: 0;
+            transform: scale(0.9) perspective(1000px) rotateY(20deg);
+        }
+
+        .gs-feature {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .gs-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .progress-bar-fill {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body class="antialiased selection:bg-primary selection:text-white">
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 grid-bg"></div>
+        <div class="blob w-[600px] h-[600px] bg-primary rounded-full top-[-20%] right-[-10%] opacity-20"></div>
+        <div class="blob w-[500px] h-[500px] bg-secondary rounded-full bottom-[-10%] left-[-10%] opacity-10"
+            style="animation-delay: -5s"></div>
+    </div>
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4">
+            <div class="glass-panel rounded-full px-6 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-emerald-300 flex items-center justify-center text-dark shadow-glow-primary">
+                        <i class="ph-bold ph-plant text-2xl"></i>
+                    </div>
+                    <span class="text-2xl font-black text-white tracking-wide">مُربّي</span>
+                </div>
+                <div class="hidden md:flex gap-8 text-sm font-bold text-gray-300">
+                    <a href="#campaign" class="hover:text-primary transition-colors">فكرة التطبيق</a>
+                    <a href="#features" class="hover:text-primary transition-colors">المميزات</a>
+                    <a href="#download" class="hover:text-secondary transition-colors">طريقة التثبيت الآمن</a>
+                </div>
+                <a href="#download"
+                    class="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-full font-bold border border-white/10 transition-all flex items-center gap-2 group">
+                    <i class="ph-bold ph-download-simple group-hover:-translate-y-1 transition-transform"></i>
+                    تنزيل
+                </a>
+            </div>
+        </div>
+    </nav>
+    <header class="relative min-h-screen flex items-center pt-24 pb-12 z-10">
+        <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="gs-hero">
+                <div
+                    class="gs-hero-item inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold text-sm mb-8 backdrop-blur-sm">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                    </span>
+                    تطبيق صدقة جارية مجاني 100%
+                </div>
+                <h1 class="gs-hero-item text-5xl lg:text-7xl font-black leading-[1.2] mb-6 text-white">
+                    رفيقك الذكي في <br>
+                    <span class="gradient-text">التربية الإسلامية</span>
+                </h1>
+                <p
+                    class="gs-hero-item text-xl text-gray-400 mb-10 leading-relaxed max-w-lg border-r-4 border-surfaceBorder pr-4">
+                    أداة عصرية تجمع بين الأصالة الدينية والأساليب التربوية الحديثة لمساعدتك في بناء جيل متزن، قوي، وواعٍ
+                    لمواجهة تحديات العصر.
+                </p>
+                <div class="gs-hero-item flex flex-col sm:flex-row gap-5">
+                    <a href="#download"
+                        class="group relative px-8 py-4 bg-gradient-to-r from-primary to-emerald-400 text-dark font-black rounded-2xl overflow-hidden shadow-glow-primary transition-transform hover:scale-105 flex items-center justify-center gap-3 text-lg">
+                        <div
+                            class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        </div>
+                        <i class="ph-bold ph-rocket-launch text-2xl relative z-10"></i>
+                        <span class="relative z-10">حمل التطبيق الآن</span>
+                    </a>
+                    <a href="#campaign"
+                        class="px-8 py-4 glass-panel hover:bg-white/5 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-3 text-lg border border-white/10 hover:border-white/20">
+                        <i class="ph-fill ph-target text-secondary text-2xl"></i>
+                        هدفنا 10,000 تحميل
+                    </a>
+                </div>
+            </div>
+            <div class="gs-hero-img-item relative hidden lg:flex justify-center perspective-[1000px]">
+                <div
+                    class="absolute top-10 right-10 glass-panel p-4 rounded-2xl animate-[float_4s_ease-in-out_infinite_reverse] z-20 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center text-secondary">
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold">تحدي اليوم</p>
+                        <p class="text-sm font-black text-white">بناء الثقة</p>
+                    </div>
+                </div>
+                <div
+                    class="absolute bottom-20 left-0 glass-panel p-4 rounded-2xl animate-[float_5s_ease-in-out_infinite] z-20 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary">
+                        <i class="ph-fill ph-shield-check text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold">حلول المشاكل</p>
+                        <p class="text-sm font-black text-white">التعامل مع العناد</p>
+                    </div>
+                </div>
+                <div
+                    class="w-[320px] h-[650px] glass-panel rounded-[3rem] border-t border-l border-white/20 p-2 shadow-2xl relative z-10 transform rotate-y-[-15deg] rotate-x-[5deg] hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 ease-out">
+                    <div
+                        class="w-full h-full bg-darker rounded-[2.5rem] border border-white/5 overflow-hidden relative flex flex-col items-center justify-center">
+                        <div class="absolute top-0 w-32 h-6 bg-black rounded-b-3xl"></div>
+                        <div
+                            class="w-32 h-32 rounded-full bg-gradient-to-tr from-primary/20 to-transparent flex items-center justify-center mb-8 border border-primary/20 shadow-glow-primary">
+                            <i class="ph-duotone ph-plant text-6xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white tracking-widest">مُربّي</h3>
+                        <p class="text-primary mt-2 font-bold text-sm tracking-widest uppercase">صدقة جارية</p>
+                        <div class="absolute bottom-10 w-3/4 h-1 rounded-full bg-white/10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="campaign" class="py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <div
+                class="glass-panel rounded-[3rem] p-8 md:p-16 border border-secondary/20 relative overflow-hidden gs-reveal">
+                <div
+                    class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-secondary/10 blur-[100px] pointer-events-none">
+                </div>
+                <div class="grid lg:grid-cols-2 gap-16 items-center relative z-10">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black text-white mb-6">لماذا التحميل المباشر (APK)؟</h2>
+                        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                            <p>
+                                تطبيق <strong>مُربّي</strong> هو <span class="text-primary font-bold">عمل خيري ومجاني
+                                    بالكامل</span> (صدقة جارية)، ولا يهدف للربح المادي نهائياً.
+                            </p>
+                            <div
+                                class="p-6 rounded-2xl bg-white/5 border border-white/10 border-r-4 border-r-secondary">
+                                <p class="mb-4">
+                                    <i class="ph-fill ph-google-play-logo text-secondary ml-2"></i>
+                                    <strong>متجر جوجل بلاي</strong> يشترط رسوم تسجيل (حوالي 40 دولار) لرفع التطبيق. بما
+                                    أن التطبيق عمل خيري، قررنا وضعه للتحميل المباشر الآمن.
+                                </p>
+                                <p class="text-white font-bold">
+                                    🎯 <span class="text-secondary">الهدف الأكبر:</span> إذا وصلنا إلى <strong>10,000
+                                        تحميل</strong> هنا، سأقوم بدفع الرسوم على نفقتي الخاصة ورفعه رسمياً على المتجر
+                                    لتسهيل الوصول إليه للملايين!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-darker rounded-3xl p-8 border border-white/10 text-center relative shadow-2xl">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-primary/20 rounded-full blur-[30px]"></div>
+                        <i class="ph-duotone ph-chart-line-up text-5xl text-primary mb-4 inline-block"></i>
+                        <h3 class="text-xl text-gray-400 font-bold mb-2">عداد التحميلات المباشر</h3>
+                        <div class="text-6xl font-black text-white my-6 tracking-tighter flex items-center justify-center gap-2"
+                            dir="ltr">
+                            <span id="download-count">1300</span>
+                            <span class="text-2xl text-gray-500 font-medium">/ 10,000</span>
+                        </div>
+                        <div class="w-full h-4 bg-white/10 rounded-full overflow-hidden mb-4 p-0.5">
+                            <div id="progress-bar"
+                                class="h-full bg-gradient-to-r from-primary to-emerald-300 rounded-full progress-bar-fill shadow-glow-primary"
+                                style="width: 13%;"></div>
+                        </div>
+                        <p class="text-sm text-primary font-bold" id="progress-text">جاري مزامنة العداد...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="features" class="py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 gs-reveal">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-4">مميزات غير مسبوقة</h2>
+                <p class="text-xl text-gray-400">صُمم بعناية ليقدم لك تجربة مستخدم فخمة ونتائج تربوية حقيقية.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 items-stretch">
+                <div
+                    class="glass-panel p-10 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300 group gs-feature h-full flex flex-col">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i class="ph-duotone ph-calendar-check text-4xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-white mb-4">فتح تدريجي للدروس</h3>
+                    <p class="text-gray-400 leading-relaxed flex-grow">
+                        نظام ذكي يفتح لك درساً واحداً كل يوم لضمان التركيز وعدم التشتت، مما يحفز الاستمرارية والتطبيق
+                        الفعلي بشكل مستدام.
+                    </p>
+                </div>
+                <div
+                    class="glass-panel p-10 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300 group gs-feature h-full flex flex-col md:translate-y-8">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i class="ph-duotone ph-star text-4xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-white mb-4">تحدي اليوم</h3>
+                    <p class="text-gray-400 leading-relaxed flex-grow">
+                        تحديات متجددة يومياً لكسر الروتين وبناء رابطة حب واحترام مع طفلك بطرق عملية ممتعة وبسيطة لا
+                        تستغرق وقتاً طويلاً.
+                    </p>
+                </div>
+                <div
+                    class="glass-panel p-10 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300 group gs-feature h-full flex flex-col">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i class="ph-duotone ph-shield-warning text-4xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-white mb-4">دليل السلوكيات</h3>
+                    <p class="text-gray-400 leading-relaxed flex-grow">
+                        مرجع تفصيلي لأشهر المشكلات السلوكية (كالعناد والخوف) مع أسبابها وطرق علاجها بمنظور إسلامي سليم
+                        يسهل تطبيقه.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="download" class="py-24 relative z-10 overflow-hidden">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 blur-[120px] rounded-full pointer-events-none">
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div
+                class="glass-panel border-primary/30 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[80px]"></div>
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="gs-reveal">
+                        <h2 class="text-4xl md:text-5xl font-black text-white mb-6">كن جزءاً من الهدف</h2>
+                        <p class="text-gray-300 text-lg mb-10 leading-relaxed">
+                            قم بتحميل ملف الـ APK الآن وثبته على هاتفك الأندرويد. تثبيتك للتطبيق يقربنا خطوة من رفعه على
+                            متجر جوجل بلاي.
+                        </p>
+                        <button id="download-btn-main"
+                            class="w-full relative group overflow-hidden bg-primary hover:bg-emerald-400 text-dark font-black text-2xl py-6 px-8 rounded-2xl shadow-glow-primary transition-all hover:scale-[1.02] flex items-center justify-center gap-4">
+                            <div
+                                class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 pointer-events-none">
+                            </div>
+                            <i class="ph-bold ph-download-simple text-4xl"></i>
+                            <div class="text-right">
+                                <span class="block leading-none mb-1">تحميل التطبيق المباشر</span>
+                                <span class="text-sm font-bold opacity-80 block">v1.0.0 • لجميع أجهزة أندرويد</span>
+                            </div>
+                        </button>
+                        <div class="mt-12 space-y-6">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                                <i class="ph-fill ph-gear text-primary"></i>
+                                خطوات التثبيت الآمن (APK):
+                            </h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 rounded-full bg-dark flex items-center justify-center text-primary font-bold border border-primary/30">1</span>
+                                    <p class="text-gray-300 text-sm mt-1">اضغط على زر التحميل أعلاه ليتم تنزيل ملف <code
+                                            class="bg-dark px-2 py-0.5 rounded text-primary border border-white/10">murabi.apk</code>.
+                                    </p>
+                                </li>
+                                <li class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 rounded-full bg-dark flex items-center justify-center text-primary font-bold border border-primary/30">2</span>
+                                    <p class="text-gray-300 text-sm mt-1">شاهد <strong>الفيديو التوضيحي</strong> في
+                                        الجانب الآخر لمعرفة كيفية فتح الملف وتخطي رسالة حماية أندرويد بسهولة.</p>
+                                </li>
+                                <li class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 rounded-full bg-dark flex items-center justify-center text-primary font-bold border border-primary/30">3</span>
+                                    <p class="text-gray-300 text-sm mt-1">اضغط <strong>(تثبيت - Install)</strong> ومبروك
+                                        عليك التطبيق!</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="gs-reveal relative flex justify-center">
+                        <div
+                            class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary opacity-20 blur-2xl rounded-full pointer-events-none">
+                        </div>
+                        <div
+                            class="relative bg-darker rounded-[2rem] p-4 border border-surfaceBorder shadow-2xl inline-block">
+                            <h4 class="text-center text-white font-bold mb-4 flex items-center justify-center gap-2">
+                                <i class="ph-fill ph-youtube-logo text-red-500 text-2xl"></i>
+                                شرح التثبيت في 60 ثانية
+                            </h4>
+                            <div
+                                class="w-[280px] h-[500px] sm:w-[315px] sm:h-[560px] rounded-2xl overflow-hidden border border-white/10 bg-dark relative">
+                                <iframe class="w-full h-full object-cover"
+                                    src="https://www.youtube.com/embed/8yJhYIC54WE?rel=0&autoplay=1&mute=1&loop=1&playlist=8yJhYIC54WE"
+                                    title="شرح تثبيت تطبيق مربي" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-darker pt-16 pb-8 border-t border-surfaceBorder relative z-10">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <i class="ph-fill ph-plant text-primary text-3xl"></i>
+                <h3 class="text-3xl font-black text-white">مُربّي</h3>
+            </div>
+            <p class="text-gray-500 mb-8 max-w-lg mx-auto leading-relaxed">
+                تطبيق خيري (صدقة جارية) يهدف لبناء أسرة مسلمة واعية. ساهم في نشره لتعم الفائدة.
+            </p>
+            <div class="flex justify-center gap-4 mb-12">
+                <a href="https://www.facebook.com/11mahmoud12" target="_blank"
+                    class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#1877F2] hover:-translate-y-1 transition-all border border-white/10 shadow-lg">
+                    <i class="ph-fill ph-facebook-logo text-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/mahmoud-n" target="_blank"
+                    class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0A66C2] hover:-translate-y-1 transition-all border border-white/10 shadow-lg">
+                    <i class="ph-fill ph-linkedin-logo text-2xl"></i>
+                </a>
+            </div>
+            <div
+                class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-center gap-2 text-gray-600 text-sm">
+                <p>جميع الحقوق محفوظة © 2026</p>
+                <span class="hidden md:inline text-gray-800">•</span>
+                <p>صُمم وطُوّر بكل فخر بواسطة <strong class="text-gray-400">م. محمود نظمي</strong></p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to(".gs-hero-item", {
+                y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out"
+            }, "+=0.1");
+            tl.to(".gs-hero-img-item", {
+                opacity: 1, scale: 1, rotationY: 0, duration: 1.5, ease: "expo.out"
+            }, "-=1");
+        });
+        gsap.utils.toArray('.gs-reveal').forEach(function (elem) {
+            ScrollTrigger.create({
+                trigger: elem,
+                start: "top 85%",
+                onEnter: () => {
+                    gsap.to(elem, { y: 0, opacity: 1, duration: 1, ease: "power3.out", overwrite: "auto" });
+                }
+            });
+        });
+        ScrollTrigger.create({
+            trigger: "#features",
+            start: "top 75%",
+            onEnter: () => {
+                gsap.to(".gs-feature", {
+                    y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.2)", overwrite: "auto"
+                });
+            }
+        });
+        const BASE_START = 1300;
+        const GOAL = 10000;
+        const API_KEY = 'murabi_apk_dl_v1_0_0';
+
+        const countEl = document.getElementById('download-count');
+        const progressEl = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const downloadBtn = document.getElementById('download-btn-main');
+
+        let currentTotal = BASE_START;
+
+        function updateCounterUI(apiCount) {
+            currentTotal = BASE_START + apiCount;
+            gsap.to(countEl, {
+                innerHTML: currentTotal,
+                duration: 2.5,
+                snap: { innerHTML: 1 },
+                ease: "power2.out"
+            });
+            let percent = (currentTotal / GOAL) * 100;
+            let cssWidth = percent > 100 ? 100 : percent;
+            progressEl.style.width = cssWidth + '%';
+            progressText.innerText = `وصلنا إلى ${percent.toFixed(1)}% من الهدف العظيم!`;
+        }
+
+        async function fetchCount() {
+            // No local storage fallback needed for this API, it supports CORS properly
+            try {
+                const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${API_KEY}`);
+                const data = await res.json();
+                updateCounterUI(data.value || 0);
+            } catch (error) {
+                console.error("Counter Error:", error);
+                updateCounterUI(0);
+            }
+        }
+
+        downloadBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#10B981', '#F59E0B', '#FFFFFF']
+            });
+
+            try {
+                const res = await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${API_KEY}`);
+                const data = await res.json();
+                updateCounterUI(data.value);
+            } catch (error) {
+                console.error("Increment Error:", error);
+                updateCounterUI(currentTotal - BASE_START + 1);
+            }
+
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = 'https://github.com/mahmoudnazmy/murabi-app/releases/download/v1.0.0/murabi.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 800);
+        });
+
+        fetchCount();
+    </script>
+</body>
+
+</html>
